@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IronPulse Fitness Club</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #E8192C;
+    --dark-red: #B01020;
+    --black: #080808;
+    --dark: #111111;
+    --card: #161616;
+    --border: #222;
+    --white: #FFFFFF;
+    --gray: #888;
+    --light-gray: #CCCCCC;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--black); color: var(--white); font-family: 'Barlow', sans-serif; overflow-x: hidden; }
+
+  /* NAVBAR */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    padding: 18px 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(8,8,8,0.95); backdrop-filter: blur(10px);
+    border-bottom: 1px solid #1a1a1a;
+  }
+  .logo { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 3px; color: var(--white); }
+  .logo span { color: var(--red); }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a { color: var(--light-gray); text-decoration: none; font-family: 'Barlow Condensed', sans-serif; font-size: 15px; letter-spacing: 2px; text-transform: uppercase; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--red); }
+  .nav-cta { background: var(--red); color: white; padding: 10px 28px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; border: none; cursor: pointer; font-size: 14px; transition: background 0.2s; }
+  .nav-cta:hover { background: var(--dark-red); }
+
+  /* HERO */
+  .hero {
+    height: 100vh; position: relative; display: flex; align-items: center;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a0505 50%, #0a0a0a 100%);
+  }
+  .hero-bg::before {
+    content: ''; position: absolute; inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 80px, rgba(232,25,44,0.03) 80px, rgba(232,25,44,0.03) 81px),
+                repeating-linear-gradient(90deg, transparent, transparent 80px, rgba(232,25,44,0.03) 80px, rgba(232,25,44,0.03) 81px);
+  }
+  .hero-number {
+    position: absolute; right: -20px; top: 50%; transform: translateY(-60%);
+    font-family: 'Bebas Neue', sans-serif; font-size: 35vw; line-height: 1;
+    color: rgba(232,25,44,0.04); letter-spacing: -10px; user-select: none;
+  }
+  .hero-content { position: relative; z-index: 2; padding: 0 60px; max-width: 900px; }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: rgba(232,25,44,0.1); border: 1px solid rgba(232,25,44,0.3);
+    padding: 8px 18px; margin-bottom: 28px;
+    font-family: 'Barlow Condensed', sans-serif; font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: var(--red);
+  }
+  .hero-tag span { width: 6px; height: 6px; background: var(--red); border-radius: 50%; animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(64px, 9vw, 130px);
+    line-height: 0.92; letter-spacing: 2px;
+    margin-bottom: 28px;
+    animation: fadeUp 0.8s ease both;
+  }
+  .hero h1 .red { color: var(--red); }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(40px)} to{opacity:1;transform:translateY(0)} }
+  .hero p {
+    font-size: 18px; color: var(--gray); max-width: 520px;
+    line-height: 1.6; margin-bottom: 44px;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+  .hero-btns { display: flex; gap: 16px; animation: fadeUp 0.8s 0.4s ease both; }
+  .btn-primary { background: var(--red); color: white; padding: 16px 44px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 16px; letter-spacing: 3px; text-transform: uppercase; border: none; cursor: pointer; transition: all 0.2s; }
+  .btn-primary:hover { background: var(--dark-red); transform: translateY(-2px); }
+  .btn-outline { background: transparent; color: white; padding: 16px 44px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 16px; letter-spacing: 3px; text-transform: uppercase; border: 2px solid rgba(255,255,255,0.3); cursor: pointer; transition: all 0.2s; }
+  .btn-outline:hover { border-color: var(--red); color: var(--red); }
+  .hero-stats {
+    position: absolute; bottom: 60px; right: 60px; z-index: 2;
+    display: flex; gap: 60px;
+  }
+  .stat { text-align: center; }
+  .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 52px; color: var(--red); line-height: 1; }
+  .stat-label { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); margin-top: 4px; }
+
+  /* SECTION COMMON */
+  section { padding: 100px 60px; }
+  .section-label { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; letter-spacing: 4px; text-transform: uppercase; color: var(--red); margin-bottom: 16px; }
+  .section-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(44px, 5vw, 72px); line-height: 1; margin-bottom: 16px; }
+  .section-sub { color: var(--gray); font-size: 16px; max-width: 500px; line-height: 1.7; }
+  .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 60px; }
+
+  /* SERVICES */
+  .services { background: var(--dark); }
+  .services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; }
+  .service-card {
+    background: var(--card); padding: 44px 32px;
+    border-top: 3px solid transparent;
+    transition: all 0.3s; cursor: default; position: relative; overflow: hidden;
+  }
+  .service-card::before {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 0;
+    background: rgba(232,25,44,0.06); transition: height 0.4s;
+  }
+  .service-card:hover { border-top-color: var(--red); }
+  .service-card:hover::before { height: 100%; }
+  .service-icon { font-size: 44px; margin-bottom: 24px; display: block; }
+  .service-card h3 { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 1px; margin-bottom: 12px; }
+  .service-card p { color: var(--gray); font-size: 14px; line-height: 1.7; }
+  .service-num { position: absolute; top: 20px; right: 24px; font-family: 'Bebas Neue', sans-serif; font-size: 64px; color: rgba(255,255,255,0.04); }
+
+  /* TRAINERS */
+  .trainers-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .trainer-card { background: var(--card); overflow: hidden; position: relative; }
+  .trainer-img {
+    width: 100%; aspect-ratio: 3/4; object-fit: cover;
+    background: linear-gradient(135deg, #1a1a1a, #2a0a0a);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 80px; position: relative; overflow: hidden;
+  }
+  .trainer-img::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(8,8,8,0.9) 0%, transparent 50%);
+  }
+  .trainer-emoji { font-size: 100px; opacity: 0.6; }
+  .trainer-info { padding: 28px; border-top: 3px solid var(--red); }
+  .trainer-info h3 { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 1px; }
+  .trainer-spec { color: var(--red); font-size: 12px; letter-spacing: 3px; text-transform: uppercase; margin: 6px 0 14px; font-family: 'Barlow Condensed', sans-serif; }
+  .trainer-info p { color: var(--gray); font-size: 14px; line-height: 1.7; }
+
+  /* PRICING */
+  .pricing { background: var(--dark); }
+  .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .price-card {
+    background: var(--card); padding: 48px 36px; position: relative; overflow: hidden;
+    border: 1px solid var(--border); transition: transform 0.3s;
+  }
+  .price-card:hover { transform: translateY(-8px); }
+  .price-card.featured { border-color: var(--red); background: linear-gradient(135deg, #1a0505, #161616); }
+  .featured-badge {
+    position: absolute; top: 24px; right: -30px;
+    background: var(--red); color: white; padding: 6px 40px;
+    font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    transform: rotate(35deg);
+  }
+  .price-tier { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; letter-spacing: 4px; text-transform: uppercase; color: var(--gray); margin-bottom: 12px; }
+  .price-amount { font-family: 'Bebas Neue', sans-serif; font-size: 72px; line-height: 1; color: var(--red); }
+  .price-period { color: var(--gray); font-size: 14px; }
+  .price-divider { width: 40px; height: 3px; background: var(--red); margin: 24px 0; }
+  .price-features { list-style: none; margin-bottom: 36px; }
+  .price-features li { padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--light-gray); display: flex; align-items: center; gap: 10px; }
+  .price-features li::before { content: '✓'; color: var(--red); font-weight: 700; }
+  .price-btn { width: 100%; padding: 14px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 15px; letter-spacing: 3px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; border: none; }
+  .price-btn-outline { background: transparent; color: var(--red); border: 2px solid var(--red) !important; border: none; }
+  .price-btn-solid { background: var(--red); color: white; }
+  .price-btn:hover { opacity: 0.85; }
+
+  /* CONTACT */
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
+  .contact-info { display: flex; flex-direction: column; gap: 32px; }
+  .contact-item { display: flex; gap: 20px; align-items: flex-start; }
+  .contact-icon { width: 50px; height: 50px; background: rgba(232,25,44,0.1); border: 1px solid rgba(232,25,44,0.3); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+  .contact-item h4 { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: var(--red); margin-bottom: 6px; }
+  .contact-item p { color: var(--light-gray); font-size: 16px; }
+  .map-embed { background: var(--card); width: 100%; height: 320px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border); overflow: hidden; }
+  .map-embed iframe { width: 100%; height: 100%; border: none; filter: grayscale(100%) invert(90%); }
+
+  /* FOOTER */
+  footer { background: #050505; padding: 40px 60px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  footer p { color: var(--gray); font-size: 13px; }
+  .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 3px; }
+  .footer-logo span { color: var(--red); }
+
+  /* SCROLL REVEAL */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="logo">IRON<span>PULSE</span></div>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#trainers">Trainers</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-cta">Join Now</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-number">IP</div>
+  <div class="hero-content">
+    <div class="hero-tag"><span></span> Now Accepting New Members</div>
+    <h1>TRANSFORM<br>YOUR <span class="red">BODY.</span><br>TRANSFORM<br>YOUR <span class="red">LIFE.</span></h1>
+    <p>Professional trainers. Modern equipment. Real results. Your journey to peak fitness starts here.</p>
+    <div class="hero-btns">
+      <button class="btn-primary">Join Now</button>
+      <button class="btn-outline">Get Free Trial</button>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">500+</div><div class="stat-label">Active Members</div></div>
+    <div class="stat"><div class="stat-num">12+</div><div class="stat-label">Expert Trainers</div></div>
+    <div class="stat"><div class="stat-num">5★</div><div class="stat-label">Member Rating</div></div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-label">What We Offer</div>
+      <h2 class="section-title">OUR SERVICES</h2>
+      <p class="section-sub">Comprehensive fitness programs designed for every goal, every body, every level.</p>
+    </div>
+  </div>
+  <div class="services-grid reveal">
+    <div class="service-card">
+      <div class="service-num">01</div>
+      <span class="service-icon">🏋️</span>
+      <h3>Personal Training</h3>
+      <p>One-on-one sessions tailored specifically to your fitness goals with certified personal trainers who push you to your limits.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">02</div>
+      <span class="service-icon">🔥</span>
+      <h3>Weight Loss Program</h3>
+      <p>Science-backed weight loss protocols combining nutrition guidance, cardio training, and metabolic conditioning for real fat loss.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">03</div>
+      <span class="service-icon">💪</span>
+      <h3>Muscle Building</h3>
+      <p>Progressive resistance training programs designed to build functional muscle mass, improve strength, and sculpt your physique.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">04</div>
+      <span class="service-icon">⚡</span>
+      <h3>Cardio & CrossFit</h3>
+      <p>High-intensity group classes that build endurance, burn calories, and create a community of athletes pushing each other forward.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TRAINERS -->
+<section id="trainers">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-label">Expert Team</div>
+      <h2 class="section-title">MEET OUR TRAINERS</h2>
+      <p class="section-sub">Certified professionals dedicated to transforming your fitness journey.</p>
+    </div>
+  </div>
+  <div class="trainers-grid reveal">
+    <div class="trainer-card">
+      <div class="trainer-img" style="background:linear-gradient(135deg,#1a0a0a,#2a1010); height:320px; display:flex; align-items:center; justify-content:center;">
+        <div class="trainer-emoji">🧑‍🦱</div>
+      </div>
+      <div class="trainer-info">
+        <h3>Rahul Sharma</h3>
+        <div class="trainer-spec">Strength & Conditioning</div>
+        <p>Certified NSCA strength coach with 8+ years of experience. Rahul has helped over 200 clients achieve their dream physique through progressive overload training and personalized nutrition plans.</p>
+      </div>
+    </div>
+    <div class="trainer-card">
+      <div class="trainer-img" style="background:linear-gradient(135deg,#0a0a1a,#10102a); height:320px; display:flex; align-items:center; justify-content:center;">
+        <div class="trainer-emoji">👩</div>
+      </div>
+      <div class="trainer-info">
+        <h3>Priya Desai</h3>
+        <div class="trainer-spec">Weight Loss & Cardio</div>
+        <p>Sports nutrition specialist and certified CrossFit Level 2 trainer. Priya's signature HIIT programs have helped 300+ clients shed stubborn fat while building lasting healthy habits and mental resilience.</p>
+      </div>
+    </div>
+    <div class="trainer-card">
+      <div class="trainer-img" style="background:linear-gradient(135deg,#0a1a0a,#102010); height:320px; display:flex; align-items:center; justify-content:center;">
+        <div class="trainer-emoji">🧔</div>
+      </div>
+      <div class="trainer-info">
+        <h3>Arjun Mehta</h3>
+        <div class="trainer-spec">Muscle Building & Powerlifting</div>
+        <p>Former national-level powerlifter turned elite coach. Arjun's expertise in biomechanics and muscle hypertrophy makes him the go-to trainer for anyone serious about building serious strength and size.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-label">Membership Plans</div>
+      <h2 class="section-title">SIMPLE PRICING</h2>
+      <p class="section-sub">Flexible plans for every commitment level. No hidden fees, no contracts.</p>
+    </div>
+  </div>
+  <div class="pricing-grid reveal">
+    <div class="price-card">
+      <div class="price-tier">Basic</div>
+      <div class="price-amount">₹1999</div>
+      <div class="price-period">per month</div>
+      <div class="price-divider"></div>
+      <ul class="price-features">
+        <li>Gym Floor Access</li>
+        <li>Cardio Equipment</li>
+        <li>Locker Room Access</li>
+        <li>Group Classes (2/week)</li>
+        <li>Fitness Assessment</li>
+      </ul>
+      <button class="price-btn price-btn-outline" style="background:transparent;color:var(--red);border:2px solid var(--red);">Get Started</button>
+    </div>
+    <div class="price-card featured">
+      <div class="featured-badge">Popular</div>
+      <div class="price-tier">Pro</div>
+      <div class="price-amount">₹3499</div>
+      <div class="price-period">per month</div>
+      <div class="price-divider"></div>
+      <ul class="price-features">
+        <li>Everything in Basic</li>
+        <li>Unlimited Group Classes</li>
+        <li>2 PT Sessions/month</li>
+        <li>Nutrition Consultation</li>
+        <li>Body Composition Analysis</li>
+        <li>Access to All Equipment</li>
+      </ul>
+      <button class="price-btn price-btn-solid">Get Started</button>
+    </div>
+    <div class="price-card">
+      <div class="price-tier">Elite</div>
+      <div class="price-amount">₹4999</div>
+      <div class="price-period">per month</div>
+      <div class="price-divider"></div>
+      <ul class="price-features">
+        <li>Everything in Pro</li>
+        <li>8 PT Sessions/month</li>
+        <li>Custom Meal Plan</li>
+        <li>24/7 Gym Access</li>
+        <li>Priority Class Booking</li>
+        <li>Monthly Progress Report</li>
+        <li>Sports Massage (1/month)</li>
+      </ul>
+      <button class="price-btn price-btn-outline" style="background:transparent;color:var(--red);border:2px solid var(--red);">Get Started</button>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-label">Get In Touch</div>
+      <h2 class="section-title">CONTACT US</h2>
+    </div>
+  </div>
+  <div class="contact-grid reveal">
+    <div class="contact-info">
+      <div class="contact-item">
+        <div class="contact-icon">📞</div>
+        <div>
+          <h4>Phone</h4>
+          <p>+91 98765 43210</p>
+          <p style="color:var(--gray);font-size:13px;margin-top:4px;">Mon–Sat: 6AM – 10PM</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">✉️</div>
+        <div>
+          <h4>Email</h4>
+          <p>info@ironpulsefitness.com</p>
+          <p style="color:var(--gray);font-size:13px;margin-top:4px;">We reply within 24 hours</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📍</div>
+        <div>
+          <h4>Location</h4>
+          <p>Plot 12, Fitness Avenue, Andheri West</p>
+          <p style="color:var(--gray);font-size:13px;margin-top:4px;">Mumbai, Maharashtra 400053</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">🕐</div>
+        <div>
+          <h4>Hours</h4>
+          <p>Mon – Sat: 5:30 AM – 11 PM</p>
+          <p style="color:var(--gray);font-size:13px;margin-top:4px;">Sunday: 7 AM – 8 PM</p>
+        </div>
+      </div>
+    </div>
+    <div class="map-embed">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d241317.11609823277!2d72.74109995709657!3d19.08219783958221!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c6306644edc1%3A0x5da4ed8f8d648c69!2sMumbai%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">IRON<span>PULSE</span> FITNESS CLUB</div>
+  <p>© 2025 IronPulse Fitness Club. All rights reserved.</p>
+  <p style="color:var(--gray);font-size:12px;">Transform. Elevate. Conquer.</p>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => observer.observe(r));
+
+  // Navbar scroll effect
+  window.addEventListener('scroll', () => {
+    document.querySelector('nav').style.boxShadow = window.scrollY > 50 ? '0 4px 30px rgba(232,25,44,0.1)' : 'none';
+  });
+</script>
+</body>
+</html>
